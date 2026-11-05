@@ -14,9 +14,11 @@ def create_file_list(folder):
     with output.open("w", newline="", encoding="utf-8-sig") as f:
         writer = csv.writer(f)
         writer.writerow(["文件名称", "文件类型", "大小（KB）"])
+        file_count=0;
 
         for item in folder.iterdir():
-            if item.is_file():
+            if item.is_file() and item.resolve() != output.resolve():
+                file_count += 1
                 writer.writerow([
                     item.name,
                     item.suffix,
@@ -24,6 +26,7 @@ def create_file_list(folder):
                 ])
 
     print(f"清单生成成功：{output.resolve()}")
+    print(f"文件总数：{file_count}")
 
 if __name__ == "__main__":
     target = input("请输入需要扫描的文件夹路径：")
