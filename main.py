@@ -1,4 +1,5 @@
 # My first Git mananged project
+print("文件扫描工具V1.0")
 from pathlib import Path
 import csv
 
