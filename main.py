@@ -16,14 +16,20 @@ def create_file_list(folder):
         writer.writerow(["文件名称", "文件类型", "大小（KB）"])
         file_count=0;
 
-        for item in folder.iterdir():
-            if item.is_file() and item.resolve() != output.resolve():
-                file_count += 1
-                writer.writerow([
-                    item.name,
-                    item.suffix,
-                    round(item.stat().st_size / 1024, 2)
-                ])
+        for item in folder.rglob("*"):
+            if not item.is_file():
+                continue
+            if ".git" in item.relative_to(folder).parts:
+               continue
+            if item.resolve() == output.resolve():
+              continue
+            
+            file_count += 1
+            writer.writerow([
+                item.name,
+                item.suffix,
+                round(item.stat().st_size / 1024, 2)
+            ])
 
     print(f"清单生成成功：{output.resolve()}")
     print(f"文件总数：{file_count}")
